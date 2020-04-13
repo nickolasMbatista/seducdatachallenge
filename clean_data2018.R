@@ -123,7 +123,6 @@ IF_ESCOLA <- read_csv2(DADOS_IF_ESCOLA)%>%
   rename(CD_ESCOLA = "CODESC")
 
 
-IF_ESCOLA <- read_csv2(DADOS_IF_ESCOLA)
 
 ## Enderecos de escolas ----
 
@@ -258,7 +257,17 @@ COORD <- read_csv2(DADOS_COORD)
 
 ###BASE - Formacao coordenadoras
 
-COORD <- COORD%>%
+COORDa <- COORD%>%
+  filter(`2018` == "SIM", CD_SITUACAO ==1)%>%
+  group_by(CD_ESCOLA)%>%
+  mutate(ESCOLA_COORD = 1)%>%
+  select(CD_ESCOLA,ESCOLA_COORD)%>%
+  unique()
+
+
+
+
+COORDb <- COORD%>%
   filter(`2018` == "SIM", CD_SITUACAO == 1)%>%
   left_join(FORMACAO1118, by ="id_interno")%>%
   select(CD_ESCOLA, id_interno, FORMACAO)%>%
@@ -392,11 +401,13 @@ BASE_FINAL_SARESP <- SARESP2018b%>%
   left_join(IDESP_ESCOLA_2018, by = "CD_ESCOLA")%>%
   left_join(IF_ESCOLA, by = "CD_ESCOLA")%>%
   left_join(SA_1118_ESCOLA, by = "CD_ESCOLA")%>%
+  left_join(COORDa , by = "CD_ESCOLA")%>%
+  left_join(COORDb , by = "CD_ESCOLA")%>%
   left_join(VICE_DIRETa, by = "CD_ESCOLA")%>%
   left_join(VICE_DIRETb, by = "CD_ESCOLA")%>%
-  mutate_at(vars(ESCOLA_VDIR,DIR_POS), ~replace_na(., 0))%>%
+  mutate_at(vars(ESCOLA_VDIR,DIR_POS,ESCOLA_COORD), ~replace_na(., 0))%>%
   unique()%>%
   mutate(dupicate = duplicated(CD_ESCOLA))%>%
   filter(dupicate == F)
 
-write_csv2(BASE_FINAL_SARESP, "BASE_FINAL_SARESP.csv")
+write_csv2(BASE_FINAL_SARESP, "BASE_FINAL_SARESP2018.csv")

@@ -1,0 +1,96 @@
+---
+title: "Quais as características da gestão escolar que impactam positivamente no rendimento dos estudantes no SARESP?"
+author: "Nickolas Martins Batista"
+date: "11/04/2020"
+output: pdf_document
+bibliography: references.bib
+nocite: '@*'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library("plm")
+library("stargazer")
+library("tidyverse")
+library("kableExtra")
+
+library(devtools)
+source_url("https://raw.githubusercontent.com/MatthieuStigler/Misconometrics/master/Gelbach_decompo/dec_covar.R")
+
+SARESP2018 <- read_csv2("BASE_FINAL_SARESP2018.CSV")
+
+SARESP2013_EM <- read_csv2("SARESP2013_EM.csv")
+
+##SARESP2013_AF <- read_csv2("SARES2013_AF.csv")
+
+##SARESP2013_AI <- read_csv2("SARESP2013_AI.csv")
+
+```
+
+## Resumo dos Resultados
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r data, include=FALSE, results = "asis"}
+
+
+
+#Regression
+
+linear_1 <- lm(`MATEMÁTICA` ~ MED_ALUNO_TURMA + TOTAL_FALTAS_INJUST + DIR_POS, data = SARESP2018)
+
+linear_2 <- lm(`MATEMÁTICA` ~ MED_ALUNO_TURMA + TOTAL_FALTAS_INJUST + DIR_POS + ESCOLA_VDIR, data = SARESP2018)
+
+decomp_reg <- lm(profic_mat ~ `etnia_Indígena` + `etnia_Negro(a)` + etnia_Oriental + `etnia_Pardo(a)` + nota_dir + nota_prof, data = SARESP2013_EM)
+
+model_full <- lm(Fertility ~ ., data=swiss)
+
+#Standard Errors
+
+covar1         <- vcovHC(linear_1, type = "HC1")
+robust_1    <- sqrt(diag(covar1))
+
+covar2         <- vcovHC(linear_2, type = "HC1")
+robust_2    <- sqrt(diag(covar2))
+
+
+
+```
+
+\begin{equation}
+f(x;\mu,\sigma^2) = \frac{1}{\sigma\sqrt{2\pi}} e^{ -\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2 }\label{eq:equation1}
+\end{equation}
+
+Toda a constituição moral do ser passa pela compreensão da existência como dito em @bloom2015does e contra argumentado em @lemos2016developing
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r, results='asis'}
+# If output: pdf_document
+stargazer::stargazer(linear_1, linear_2, se=list(robust_1, robust_2), title = "Results")
+```
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r, results='asis'}
+# Decomposition output: pdf_document
+
+dec_long <- dec_covar(model_full, var_main = "Education", format = "long", add_coefs = TRUE, conf.int = TRUE)
+
+
+
+
+
+kable(dec_long, "latex", booktabs = T) %>% 
+  kable_styling(latex_options = c("striped", "scale_down"))
+
+
+
+
+```
+
+# REFERENCES
