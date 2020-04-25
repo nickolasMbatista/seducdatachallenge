@@ -106,8 +106,8 @@ SA_1118_ESCOLA<- SA_1118%>%
   mutate(ANO_EXERC = (difftime("2018-12-31",as.Date(DATA_INICIO_EXERCICIO_E,format='%d/%m/%Y'),units = "weeks"))/52.25)%>%
   left_join(AUXILIAR, by ="id_interno")%>%
   group_by(CD_ESCOLA)%>%
-  mutate(MED_ANO_EXERC = mean(ANO_EXERC, na.rm = T),
-         MED_IDADE = mean(IDADE, na.rm = T))%>%
+  mutate(MED_ANO_EXERC = round(mean(ANO_EXERC, na.rm = T), digits = 2),
+         MED_IDADE = round(mean(IDADE, na.rm = T),digits = 2))%>%
   select(CD_ESCOLA,MED_ANO_EXERC,MED_IDADE)%>%
   unique()
 
@@ -394,7 +394,6 @@ BASE_FINAL_SARESP <- SARESP2018b%>%
   left_join(SARESP2018a, by = "CD_ESCOLA")%>%
   left_join(ALUNO_ESCOLA_FINAL, by = "CD_ESCOLA")%>%
   left_join(ausencia_1118_escola, by = "CD_ESCOLA")%>%
-  left_join(COORD, by = "CD_ESCOLA")%>%
   left_join(END18, by = "CD_ESCOLA")%>%
   left_join(FORMACAO1118_DIR, by = "CD_ESCOLA")%>%
   left_join(FORMACAO1118_PERC, by = "CD_ESCOLA")%>%
@@ -410,4 +409,4 @@ BASE_FINAL_SARESP <- SARESP2018b%>%
   mutate(dupicate = duplicated(CD_ESCOLA))%>%
   filter(dupicate == F)
 
-write_csv2(BASE_FINAL_SARESP, "BASE_FINAL_SARESP2018.csv")
+write_csv(BASE_FINAL_SARESP, "BASE_FINAL_SARESP2018.csv", append = FALSE)
