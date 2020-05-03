@@ -3,6 +3,8 @@ title: "Quais as características da gestão escolar que impactam positivamente 
 author: "Nickolas Martins Batista"
 output: pdf_document
 bibliography: references.bib
+biblio-style: "apalike"
+link-citations: true
 nocite: '@*'
 ---
 
@@ -23,9 +25,9 @@ SARESP2018 <- read_csv("BASE_FINAL_SARESP2018.CSV") ##Base gerada em "clean_data
 
 SARESP2013_EM <- data.frame (read_csv2("SARESP2013_EM.csv")) ## Base gerada em "clean_saresp_2012_2013.R"
 
-SARESP2013_AF <- data.frame (read_csv2("SARESP2013_AF.csv"))
+SARESP2013_AF <- data.frame (read_csv2("SARESP2013_AF.csv")) ## Base gerada em "clean_saresp_2012_2013.R"
 
-SARESP2013_AI <- data.frame (read_csv2("SARESP2013_AI.csv"))
+SARESP2013_AI <- data.frame (read_csv2("SARESP2013_AI.csv")) ## Base gerada em "clean_saresp_2012_2013.R"
 
     ## Vice Diretor 2018 ----
 
@@ -185,7 +187,7 @@ decomp_em_lp <- dec_covar(linear_em3lp, var_main = c("etnia_Negro.a.","etnia_Par
 var_em_lp <- summary(linear_em4lp)$coefficients[1] - summary(linear_em1lp)$coefficients[2] + sum(decomp_em_lp$delta)
 
     
-decomp_em_lp <- add_row(decomp_em_mat,covariate = "E.F. Escola", variable = "etnia_Negro.a.", delta = -var_em_lp)%>%
+decomp_em_lp <- add_row(decomp_em_lp,covariate = "E.F. Escola", variable = "etnia_Negro.a.", delta = -var_em_lp)%>%
   mutate(delta_perc = delta/sum(delta))
 
 
@@ -260,7 +262,7 @@ decomp_af_lp <- dec_covar(linear_af3lp, var_main = c("etnia_Negro.a.","etnia_Par
 var_af_lp <- summary(linear_af4lp)$coefficients[1] - summary(linear_af1lp)$coefficients[2] + sum(decomp_af_lp$delta)
 
 
-decomp_af_lp <- add_row(decomp_em_mat,covariate = "E.F. Escola", variable = "etnia_Negro.a.", delta = -var_af_lp)%>%
+decomp_af_lp <- add_row(decomp_af_lp,covariate = "E.F. Escola", variable = "etnia_Negro.a.", delta = -var_af_lp)%>%
   mutate(delta_perc = delta/sum(delta))
 
 
@@ -323,7 +325,7 @@ decomp_ai_mat <- dec_covar(linear_ai3, var_main = c("etnia_Negro.a.","etnia_Pard
 var_ai_mat <- summary(linear_ai4)$coefficients[1] - summary(linear_ai1)$coefficients[2] + sum(decomp_ai_mat$delta)
 
 
-decomp_ai_mat <- add_row(decomp_af_mat,covariate = "E.F. Escola", variable = "etnia_Negro.a.", delta = -var_ai_mat)%>%
+decomp_ai_mat <- add_row(decomp_ai_mat,covariate = "E.F. Escola", variable = "etnia_Negro.a.", delta = -var_ai_mat)%>%
   mutate(delta_perc = delta/sum(delta))
 
 
@@ -335,41 +337,175 @@ decomp_ai_lp <- dec_covar(linear_ai3lp, var_main = c("etnia_Negro.a.","etnia_Par
 var_ai_lp <- summary(linear_ai4lp)$coefficients[1] - summary(linear_ai1lp)$coefficients[2] + sum(decomp_ai_lp$delta)
 
 
-decomp_ai_lp <- add_row(decomp_em_mat,covariate = "E.F. Escola", variable = "etnia_Negro.a.", delta = -var_ai_lp)%>%
+decomp_ai_lp <- add_row(decomp_ai_lp,covariate = "E.F. Escola", variable = "etnia_Negro.a.", delta = -var_ai_lp)%>%
   mutate(delta_perc = delta/sum(delta))
 
 ```
 
 
-# Resumo dos Resultados
+## Resumo dos Resultados
 
 
-
+  A gestão escolar compõem grande parte do desafio da construção do ambiente educacional, diretores, vice-diretores e coordenadores são agentes imediatos neste processo. Em linhas gerais podemos definir a gestão escolar em dois grandes grupos de atividade, o primeiro deles é a gestão estrutural e operacional da escola, no qual diretores e vice-diretores exercem fundamental papel no monitoramento de questões estruturais da condição educacional e executam importante ação ao monitorar a atividade de todos os trabalhadores que compõem a unidade educacional da qual esses são responsáveis, autores como @dobbie2013getting argumentam sobre a relevância que um processo de monitoramento sobre outputs escolares tem sobre os resultados de longo prazo de uma escola; o segundo conjunto trata da gestão pessoal de todos aqueles que fazem parte do ambiente educacional, esta atividade tem importante relação com o coordenador que diante do corpo docente é responsável pelo monitoramento da estrutura e da execução do currículo escolar, além de ser importante agente na formação de professores.
+  
+  Diante da complexidade da gestão escolar a figura do vice-diretor exerce fundamental papel ao auxiliar os diretores na gestão pedagógica e administrativa. Analisando os resultados das Tabelas 1 e 2 pode-se verificar que a figura do vice-diretor impacta positivamente no resultados do Saresp do ano de 2018 nas matéria de matemática e língua portuguesa das escolas. Em alguma medida isso se deve a divisão de responsabilidades para com o diretor e a possibilidade deste exercer um trabalho ativo ao se tornar um elo de ligação entre o conjunto pedagógico e administrativos. Ao considerarmos variáveis que descrevem a composição do corpo docente e da escola, observa-se que o impacto da atividade de vice-direção sofre queda, mas ainda se apresenta significante quando estudam-se os resultados do Saresp.
+  
+  Responsável pela gestão do currículo escolar junto ao corpo de professores, a atividade do coordenador também apresenta elevado impacto quando avaliam-se os resultados no Saresp. Nas tabelas 3 e 4 temos os resultados de uma regressão que descreve a relevância da formação destes coordenadores sobre o resultado das escolas na prova padronizada de 2018. Nestas tabelas verifica-se que quanto menor é a taxa de coordenadores com bacharelado maior é a nota da escola, isto descreve a relevância que obter "saberes" além dos disponíveis em um formação de bacharelado podem ter sobre as responsabilidades de um coordenador. Ou seja, escolas cujo conjunto de coordenadores tem em sua formação indivíduos com especialização além do grau de bacharel tendem a apresentar resultados superiores no Saresp, isto se deve em alguma medida ao conjunto de informações que coordenadores com especialização, mestrado ou doutorado tem para disponibilizar aos conjunto de professores que estão sobre sua reponsabilidade. É importante considerar que atividade de formação de professores também está intimamente ligada a capacitação do coordenador pedagógico, de modo que coordenadores com maior conjunto de informações sobre as questões de sala de aula auxiliam seu corpo de professores na busca por informação e na melhoria da atividade do docente.
+  
+  Além das responsabilidades de gestão associadas às funções de diretor, vice-diretor e coordenador, as tabelas de 1 à 4 também descrevem como as características do corpo docente impactam no resultado dos alunos em uma prova padronizada. Em todos os casos o aumento da média de idade do corpo docente impacta negativamente no resultado do saresp, assim como o aumento na média de anos de exercício do corpo docente gera impacto positivo no resultado dos alunos. Em linhas gerais observa-se que um conjunto de professores com mais tempo de sala de aula geram melhores resultados acadêmicos, assim como professores com mais idade comprometem o desempenho de seus alunos. Isto suscita a necessidade de um estudo sobre a estruturação do corpo docente em cada série, ou seja, se houvesse a possibilidade de definir as salas de todos os professores faria mais sentido construir um corpo docente sempre combinando professores jovens com professores com muita experiência dentro da rede pública de ensino.
+  
+  A melhoria da gestão escolar passa também pela redução das diferenças étnicas presentes em resultados de provas padronizadas, ou seja reduzir os gaps étnicos na prova Saresp eleva o resultado médio das escolas se os grupos de nota mais baixa se aproximarem dos resultados dos grupos de melhor desempenho, de forma geral isso também é responsabilidade da gestão escolar pois parte dessa diferença e explicada pela condição da sala de aula e por condições médias associadas ao professor [see. @botelho2015racial]. Como observa-se nas tabelas de 5 à 10 para o ensino médio, e ensino fundamental a diferença média de nota entre indivíduos que se autodeclaram brancos e os que se autodeclaram negros é significante e persistentemente negativa, ou seja, mesmo controlando por um conjunto de variáveis socioeconômicas obtidas no questionário do saresp a diferença de nota existente entre brancos e negros não é explicada em sua totalidade. Ao analisarmos a coluna (4) das tabelas de 5 à 10 fica evidente que mesmo controlando por efeito fixo de escola e inseridno um conjunto de condições socieconômicas o gap de nota entre etnias reduz, mas ainda é estatísticamente significante. Além disso, estas mesmas tabelas nos permitem levantar a hipótese de que garantir o acesso para os pais de informações escolares dos alunos eleva a nota média das escolas, sendo portanto uma importante atividade de gestão escolar ao reduzir as diferenças entre a famália e o ambiente educacional.  
+  
+  A questão que segue dada a diferença de nota entre grupos étnicos é: quanto desta diferença pode ser atribuida a fatores comuns médios entre as escolas? Com o objetivo de responder essa questão usou-se a mesma metodologia descrita em @gelbach2016covariates, nesta os autores decompõem o viés de variável omitida para descrever quanto das variáveis no modelo mais bem especificado impactam sobre o conjunto de variáveis no modelo base. Os resultados apresentados nas tabelas de 11 à 16 descrevem percentualmente quanto as escolas afetam na queda da diferença de notas entre brancos e negros, para as diferentes fases do ciclo escolar. Usando as notas saresp de 2013 e associando os resultados aos questionários socioeconômicos fica evidente que mais de 70% da queda na nota saresp pode ser explicada pela condição das escolas, no caso de maior relevância a escola chega a representar mais de 84% da queda da diferença de notas entre o grupo étnico de brancos e negros no resultado final. É importante ressaltar que é necessário decompor este efeito agregado das escolar em características da gestão escolar, de modo a determinar os conjuntos de práticas necessárias para reduzir essa diferença em nota e assim elevar a nota média das escolas.
+  
+    
 
 
 \newpage
 # Apêndice A - Tabelas de Resultados
 
-```{r em_mat, echo=FALSE, results='asis'}
+```{r v_dir_mat, echo=FALSE, results='asis'}
 # If output: pdf_document
 library(stargazer)
 
-stargazer(linear_vdir1lp, linear_vdir2lp, linear_vdir3lp, linear_vdir4lp, se=list(robust_vdir1lp, robust_vdir2lp,robust_vdir3lp,robust_vdir4lp ),font.size = "tiny", title = "Results", type = "latex")
+stargazer(linear_vdir1mt, linear_vdir2mt, linear_vdir3mt, linear_vdir4mt, se=list(robust_vdir1mt, robust_vdir2mt,robust_vdir3mt,robust_vdir4mt ),font.size = "tiny", title = "Vice-Diretoras - Matemática - 2018", type = "latex", header=FALSE)
+
+```
+
+
+```{r v_dir_lp, echo=FALSE, results='asis'}
+# If output: pdf_document
+library(stargazer)
+
+stargazer(linear_vdir1lp, linear_vdir2lp, linear_vdir3lp, linear_vdir4lp, se=list(robust_vdir1lp, robust_vdir2lp,robust_vdir3lp,robust_vdir4lp ), font.size = "tiny", title = "Vice-Diretoras - Língua Portuguesa - 2018", type = "latex", header=FALSE)
+
+```
+
+
+
+```{r v_coord_mat, echo=FALSE, results='asis'}
+# If output: pdf_document
+library(stargazer)
+stargazer(linear_coord1mt, linear_coord2mt,linear_coord3mt, linear_coord4mt, se=list(robust_coord1mt, robust_coord2mt, robust_coord3mt, robust_coord3mt), font.size = "tiny", title = "Coordenadoras - Matemática - 2018", type = "latex", header=FALSE)
 
 
 ```
 
 
-```{r decomp_em_mat, echo=FALSE, results='asis'}
+```{r v_coord_lp, echo=FALSE, results='asis'}
+# If output: pdf_document
+library(stargazer)
+stargazer(linear_coord1lp, linear_coord2lp,linear_coord3lp, linear_coord4lp, se=list(robust_coord1lp, robust_coord2lp, robust_coord3lp, robust_coord4lp),font.size = "tiny", title = "Coordenadoras - Língua Portuguesa - 2018", type = "latex", header=FALSE)
+
+
+```
+
+```{r mat_em, echo=FALSE, results='asis'}
+# If output: pdf_document
+library(stargazer)
+
+
+stargazer(linear_em1,linear_em2,linear_em3,linear_em4, se=list(robust_em1,robust_em2, robust_em3,robust_em4), font.size = "tiny", title = "Ensino Médio - Saresp 2013 - Matemática", type = "latex", 
+                     keep = c("etnia_Negro","etnia_Pardo","agua","esgoto","luz","gas","lixo","info"), header=FALSE)
+
+```
+
+```{r lp_em, echo=FALSE, results='asis'}
+# If output: pdf_document
+library(stargazer)
+
+stargazer(linear_em1lp,linear_em2lp,linear_em3lp,linear_em4lp, se=list(robust_em1lp,robust_em2lp, robust_em3lp,robust_em4lp), font.size = "tiny", title = "Ensino Médio - Saresp 2013 - Língua Portuguesa", type = "latex", 
+                     keep = c("etnia_Negro","etnia_Pardo","agua","esgoto","luz","gas","lixo","info"), header=FALSE)
+
+```
+
+
+```{r mat_af, echo=FALSE, results='asis'}
+# If output: pdf_document
+library(stargazer)
+
+stargazer(linear_af1,linear_af2,linear_af3,linear_af4, se=list(robust_af1,robust_af2, robust_af3,robust_af4), font.size = "tiny", title = "Anos Finais - Saresp 2013 - Matemática", type = "latex", 
+                     keep = c("etnia_Negro","etnia_Pardo","agua","esgoto","luz","gas","lixo","info"), header=FALSE)
+
+```
+
+
+```{r lp_af, echo=FALSE, results='asis'}
+# If output: pdf_document
+library(stargazer)
+
+stargazer(linear_af1lp,linear_af2lp,linear_af3lp,linear_af4lp, se=list(robust_af1lp,robust_af2lp, robust_af3lp,robust_af4lp), font.size = "tiny", title = "Anos Finais - Saresp 2013 - Língua Portuguesa", type = "latex", 
+                     keep = c("etnia_Negro","etnia_Pardo","agua","esgoto","luz","gas","lixo","info"), header=FALSE)
+```
+
+```{r mat_ai, echo=FALSE, results='asis'}
+# If output: pdf_document
+library(stargazer)
+
+stargazer(linear_ai1,linear_ai2,linear_ai3,linear_ai4, se=list(robust_ai1,robust_ai2, robust_ai3,robust_ai4), font.size = "tiny", title = "Anos Iniciais - Saresp 2013 - Matemática", type = "latex", 
+                     keep = c("etnia_Negro","etnia_Pardo","agua","esgoto","luz","gas","lixo","info"), header=FALSE)
+
+```
+
+```{r lp_ai, echo=FALSE, results='asis'}
+# If output: pdf_document
+library(stargazer)
+
+stargazer(linear_ai1lp,linear_ai2lp,linear_ai3lp,linear_ai4lp, se=list(robust_ai1lp,robust_ai2lp, robust_ai3lp,robust_ai4lp), font.size = "tiny", title = "Anos Iniciais - Saresp 2013 - Língua Portuguesa", type = "latex", 
+                     keep = c("etnia_Negro","etnia_Pardo","agua","esgoto","luz","gas","lixo","info"), header=FALSE)
+```
+
+```{r decomp_mat_em, echo=FALSE, results='asis'}
 # If output: pdf_document
 library(kableExtra)
 
-kable(decomp_em_mat, "latex",caption = "Ensino Médio - Matemática - Decomposição",booktabs = T) %>% 
+kable(decomp_em_mat, "latex",caption = "Decomposição - Ensino Médio - Matemática ",booktabs = T) %>% 
   kable_styling(latex_options = c("striped", "scale_down"))
-
 
 ```
 
+```{r decomp_lp_em, echo=FALSE, results='asis'}
+# If output: pdf_document
+library(kableExtra)
+
+kable(decomp_em_lp, "latex",caption = "Decomposição - Ensino Médio - Língua Portuguesa",booktabs = T) %>% 
+  kable_styling(latex_options = c("striped", "scale_down"))
+```
+
+```{r decomp_mat_af, echo=FALSE, results='asis'}
+# If output: pdf_document
+library(kableExtra)
+
+kable(decomp_af_mat, "latex",caption = "Decomposição - Anos Finais - Matemática ",booktabs = T) %>% 
+  kable_styling(latex_options = c("striped", "scale_down"))
+
+```
+
+```{r decomp_lp_af, echo=FALSE, results='asis'}
+# If output: pdf_document
+library(kableExtra)
+
+kable(decomp_af_lp, "latex",caption = "Decomposição - Anos Finais - Língua Portuguesa",booktabs = T) %>% 
+  kable_styling(latex_options = c("striped", "scale_down"))
+```
+
+```{r decomp_mat_ai, echo=FALSE, results='asis'}
+# If output: pdf_document
+library(kableExtra)
+
+kable(decomp_ai_mat, "latex",caption = "Decomposição - Anos Iniciais - Matemática ",booktabs = T) %>% 
+  kable_styling(latex_options = c("striped", "scale_down"))
+
+```
+
+```{r decomp_lp_ai, echo=FALSE, results='asis'}
+# If output: pdf_document
+library(kableExtra)
+
+kable(decomp_ai_lp, "latex",caption = "Decomposição - Anos Iniciais - Língua Portuguesa",booktabs = T) %>% 
+  kable_styling(latex_options = c("striped", "scale_down"))
+```
 
 \newpage
+
 # REFERENCES

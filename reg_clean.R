@@ -6,6 +6,7 @@ library("lfe")
 library("kableExtra")
 library("devtools")
 
+
 source_url("https://raw.githubusercontent.com/MatthieuStigler/Misconometrics/master/Gelbach_decompo/dec_covar.R")
 
   ##Vice Diretor 2018 ----
@@ -129,7 +130,7 @@ covar_em4       <- vcovHC(linear_em4, type = "HC1")
 robust_em4    <- sqrt(diag(covar_em4))
 
 
-stargazer::stargazer(linear_em1,linear_em2,linear_em3,linear_em4, se=list(robust_em1,robust_em2, robust_em3,robust_em4), title = "Results", type = "text", 
+stargazer::stargazer(linear_em1,linear_em2,linear_em3,linear_em4, se=list(robust_em1,robust_em2, robust_em3,robust_em4), title = "Results", type = "latex", 
                      keep = c("etnia_Negro","etnia_Pardo","agua","esgoto","luz","gas","lixo","info"))
 
 
