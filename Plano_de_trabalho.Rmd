@@ -1,0 +1,21 @@
+---
+title: "Plano de Trabalho - Desafio de Dados Abertos"
+author: "Nickolas Martins Batista"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Plano de Trabalho
+
+  Com o objetivo de determinar o impacto da gestão escolar sobre os resultados dos alunos no ambiente escolar e gerar insights de práticas que melhorem a educação pública este plano de trabalho descreve a aplicação de uma metodologia que cobre ambos os processos.
+ 
+  A mensuração do impacto dos gestores escolares passa pela avaliação em um conjunto de tempo do "efeito fixo" deste gestor para diversos alunos que estiveram sobre a sua alçada. Inicialmente se faz necessário uma base de dados que contenha nota na prova SARESP de matemática e língua portuguesa, os resultados destes alunos nos questionários socioeconômicos, dados de matrícula do aluno para os anos de 2016 à 2019, assim como um base na qual se descreve os coordenadores, professores, vice-diretores e diretores que atuavam nessas funções para todos os anos de 2016 à 2019, este último conjunto de dados precisa conter informações descritivas do gestor, como por exemplo, sua idade, tempo que está no cargo, formação, etc. O objetivo é implementar uma metodologia análoga à descrita nos modelos AKM, nestes realizamos um exercício de regressão considerando os efeitos fixos dos indivíduos (coordenadores, vice-diretores, diretores e alunos) além de considerar o efeito fixo da escola no qual o aluno realizou o exame do Saresp e um conjunto de características descritivas dos gestore  e dos alunos.
+ 
+  Em paralelos a isso é necessário veicular um questionário para gestores escolares com o objetivo de determinar as práticas efetivamente realizadas por estes no ano de 2019. Este questionário deve seguir a métrica de avaliação presente no *World Management Survey* (WMS), de modo que o gestores possa descrever quantitativamente e qualitativamente as práticas realizadas durante a sua gestão para todos os indivíduos que estavam sob a sua responsabilidade. Este questionário deve ser disponibilizado de forma online e respondido por mais 95% do conjunto de gestores da rede pública do estado de São Paulo, caso isso não seja possível se faz necessário implementar uma aleatorização na distribuição do questionário.
+ 
+  Usando as respostas obtidas nos questionários inicialmente se constrói um índice sobre práticas e gestão, este é uma média do score atribuído a cada prática avaliada no questionário, para cada gestor em cada escola. Em seguida combinamos os resultados obtidos através deste índice com os resultados na prova SARESP de 2019 por aluno e os dados descritivos dos gestores e dados de matrícula destes mesmos alunos.
+  
+  Com relação ao cronograma, é necessário e desenvolver e programar o questionário em uma plataforma cujo acesso seja viável a todos os gestores na primeira semana, em seguida contabilizar todas as respostas deste questionário por um período de duas semanas, permitindo somente uma resposta por gestor. Em paralelo colher os dados de matrícula dos alunos para os anos de 2016 à 2019, assim como os dados do SARESP e os questionários Socioeconômico e a base histórica dos gestores escolares considerando características como idade, formação, tempo de serviço no cargo, tempo de atividade como professor(a), se possível também considerar os dados da RAIS e entender se gestores que tiveram alguma experiência no setor privado geram efeito positivo quando inseridos no setor público.      
